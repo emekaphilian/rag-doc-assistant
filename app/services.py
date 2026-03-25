@@ -3,6 +3,11 @@
 import os
 from typing import List
 from dotenv import load_dotenv
+# Old (breaks on Streamlit Cloud)
+from langchain_huggingface import HuggingFaceEmbeddings
+
+# New (works with your requirements.txt)
+from langchain.embeddings import HuggingFaceEmbeddings
 
 # -------------------------
 # LOAD ENVIRONMENT VARIABLES
