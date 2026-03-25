@@ -6,3 +6,6 @@ __pycache__/
 *.pyd
 *.db
 node_modules/
+vectorstore_index/
+dist/
+build/  
