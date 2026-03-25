@@ -45,3 +45,5 @@ python-docx
 # =========================
 tiktoken
 requests
+
+langchain==0.1.0
