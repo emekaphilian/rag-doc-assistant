@@ -4,6 +4,11 @@ import os
 from pathlib import Path
 import time
 import torch  # add this at the top with your imports
+# Old (breaks on Streamlit Cloud)
+from langchain_huggingface import HuggingFaceEmbeddings
+
+# New (works with your requirements.txt)
+from langchain.embeddings import HuggingFaceEmbeddings
 # -----------------------------
 # Path Fix
 # -----------------------------
