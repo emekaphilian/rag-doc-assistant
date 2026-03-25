@@ -1,0 +1,47 @@
+# =========================
+# Core Framework
+# =========================
+fastapi
+uvicorn
+
+# =========================
+# Frontend Dashboard
+# =========================
+streamlit
+
+# =========================
+# LangChain Core
+# =========================
+langchain
+langchain-community
+
+# =========================
+# LLM Providers
+# =========================
+openai
+cohere
+huggingface_hub
+
+# =========================
+# Embeddings (LOCAL 🔥)
+# =========================
+sentence-transformers
+transformers
+
+# =========================
+# Vector Database
+# =========================
+faiss-cpu
+chromadb
+
+# =========================
+# Document Parsing
+# =========================
+pypdf
+python-docx
+
+# =========================
+# Utilities
+# =========================
+tiktoken
+requests

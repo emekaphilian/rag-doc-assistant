@@ -1,0 +1,440 @@
+Here’s your **fully upgraded, merged, and polished README.md** — combining your original version with all the advanced features we built (multi-LLM, streaming, improved UX, etc.) while keeping it recruiter-grade 👇
+
+---
+
+# 📄 LLM-Powered Document Q&A System (RAG)
+
+An advanced **Retrieval-Augmented Generation (RAG)** system that allows users to upload documents (PDF/DOCX) and **interact with them conversationally** using modern Large Language Models.
+
+This project goes beyond basic RAG by supporting:
+
+* 🔌 **Multi-LLM Providers (OpenAI, Cohere, Hugging Face)**
+* ⚡ **Real-time streaming responses (ChatGPT-like UX)**
+* 🎛 **Dynamic model selection per API key**
+* 🧠 **Semantic retrieval with FAISS vector database**
+* 💬 **Interactive chat interface via Streamlit**
+* 🌐 Optional **FastAPI backend for API access**
+
+---
+
+## 🌐 Live Demo
+
+👉 **Try it here:**
+[https://rag-portfolio-zeta.vercel.app/](https://rag-portfolio-zeta.vercel.app/)
+
+---
+
+## ⚠️ Prerequisites
+
+This project uses external LLM APIs. You must provide **your own API key**.
+
+### 🔑 Supported Providers
+
+* **OpenAI** → [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+* **Cohere** → [https://dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
+* **Hugging Face** → [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+
+> ⚠️ Without a valid API key, the system will not function.
+
+---
+
+## 🚀 Features
+
+### 🧠 Core AI Features
+
+* Upload **PDF/DOCX** documents
+* Automatic text extraction & chunking
+* Embedding generation (`all-MiniLM-L6-v2`)
+* Semantic search via **FAISS vector database**
+* Context-aware Q&A using RAG
+
+---
+
+### 🤖 LLM Capabilities
+
+* Multi-provider support:
+
+  * OpenAI
+  * Cohere
+  * Hugging Face
+* Dynamic **model discovery (top 5 relevant models)**
+* Real-time **token streaming (not fake typing)**
+
+---
+
+### 💬 User Experience
+
+* Chat-style interface (like ChatGPT)
+* Streaming responses with cursor effect
+* Model badges & provider indicators
+* Source document references
+* Persistent vector index (no reprocessing needed)
+
+---
+
+## 🏗 Project Structure
+
+```
+rag-qa/
+│
+├── app/                     # Core backend logic
+│   ├── services.py          # LLM abstraction + RAG pipeline
+│   ├── main.py              # FastAPI app (optional)
+│   ├── routes.py            # API endpoints
+│   └── utils.py
+│
+├── dashboard/               # Streamlit frontend
+│   └── app.py
+│
+├── vectorstore_index/       # Saved FAISS index
+│
+├── .env                     # API keys (local only)
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🧠 System Architecture
+
+```
+User
+ ↓
+Streamlit UI
+ ↓
+QASystem
+ ↓
+Retriever (FAISS)
+ ↓
+Relevant Chunks
+ ↓
+LLM (OpenAI / Cohere / HF)
+ ↓
+Streaming Response
+```
+
+---
+
+## 🔄 Application Flow
+
+### 1. 🔐 API Key Input
+
+User enters API key for selected provider
+
+### 2. 🤖 Model Discovery
+
+System fetches **top 5 relevant models**
+
+### 3. ⚙️ LLM Initialization
+
+User selects model → system validates → ready
+
+### 4. 📄 Document Upload
+
+Upload PDF or DOCX
+
+### 5. ✂️ Processing
+
+* Split into chunks
+* Generate embeddings
+* Store in FAISS
+
+### 6. 🔍 Query
+
+User asks question
+
+### 7. 🧠 Answer
+
+* Retrieve relevant chunks
+* Send to LLM
+* **Stream response in real-time**
+
+---
+
+## ⚡ Streaming Architecture
+
+### ❌ Before
+
+Wait → Full response → Display
+
+### ✅ Now
+
+Real-time token streaming:
+
+* **OpenAI** → `stream=True`
+* **Cohere** → `chat_stream`
+* **Hugging Face** → fallback simulation
+
+---
+
+## 📸 Suggested Screenshots (Add These)
+
+> Place in `/assets/` folder
+
+### 🖼 1. Homepage / Empty State
+
+`assets/home.png`
+→ Clean UI before setup
+
+### 🖼 2. API Key + Model Selection
+
+`assets/model-selection.png`
+→ Shows dynamic model loading
+
+### 🖼 3. Document Upload
+
+`assets/upload.png`
+
+### 🖼 4. Chat Interface (Streaming)
+
+`assets/chat-stream.png`
+→ Highlight real-time response
+
+### 🖼 5. Source Retrieval Panel
+
+`assets/sources.png`
+
+### 🖼 6. Before vs After Streaming
+
+`assets/streaming-comparison.png`
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/emekaphilian/AI-ML-Projects.git
+cd AI-ML-Projects
+```
+
+---
+
+### 2. Create Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+Activate:
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# macOS/Linux
+source .venv/bin/activate
+```
+
+---
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 4. Set API Keys
+
+Create `.env` file:
+
+```
+OPENAI_API_KEY=your_key
+COHERE_API_KEY=your_key
+HF_API_TOKEN=your_token
+```
+
+---
+
+### 5. (Optional) Set Default Provider
+
+```
+LLM_PROVIDER=openai
+```
+
+---
+
+## 🖥️ Running the App
+
+### ▶ Streamlit Dashboard
+
+```bash
+streamlit run dashboard/app.py
+```
+
+Open:
+
+```
+http://localhost:8501
+```
+
+---
+
+### ⚙️ FastAPI Backend (Optional)
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Endpoints:
+
+* `POST /upload`
+* `GET /ask?q=...`
+
+---
+
+## 💾 Persisting FAISS Index
+
+### Save
+
+```python
+vectorstore.save_local("vectorstore_index")
+```
+
+### Load
+
+```python
+FAISS.load_local("vectorstore_index", embeddings)
+```
+
+---
+
+## ⚠️ Bottlenecks We Faced
+
+### ❌ Fake Streaming
+
+* Initially used character-by-character display
+* Caused delayed UX
+
+---
+
+### ❌ API Inconsistencies
+
+* OpenAI vs Cohere vs HF differences
+* Required custom abstraction layer
+
+---
+
+### ❌ Hugging Face Overload
+
+* Thousands of models returned
+* Needed filtering logic
+
+---
+
+### ❌ UI Bug
+
+* White text on white background
+
+---
+
+## 💡 Breakthroughs
+
+### ✅ Real Streaming
+
+* Implemented true token streaming
+* Massive UX improvement
+
+---
+
+### ✅ LLM Abstraction Layer
+
+```
+BaseLLM → OpenAI / Cohere / HF
+```
+
+---
+
+### ✅ Dynamic Model Selection
+
+* User-specific model availability
+* Based on API key
+
+---
+
+## 📚 What I Learned
+
+* End-to-end RAG system design
+* LLM provider differences
+* Importance of streaming UX
+* Vector databases (FAISS)
+* Handling real-world API errors
+* Building production-ready AI apps
+
+---
+
+## 🔮 Future Improvements
+
+* 🧠 Conversational memory (multi-turn chat)
+* 📊 Token usage tracking
+* 📁 Multi-document support
+* 🔍 Re-ranking models
+* 🌐 Deployment (Streamlit Cloud / Docker)
+* 🔐 Authentication system
+* 📈 Analytics dashboard
+* 🚀 Optional (Next Level Improvements)
+* Auto-initialize after model select.(no button needed)
+* Show model capabilities:
+🧠 Reasoning
+💬 Chat
+⚡ Fast
+🌍 Multilingual
+
+---
+
+## 🧪 Usage Guide
+
+1. Select provider
+2. Enter API key
+3. Load models
+4. Select model
+5. Initialize LLM
+6. Upload document
+7. Ask questions
+
+---
+
+## 🛠️ Extensions
+
+* Add metadata filtering
+* Switch to ChromaDB
+* Add authentication
+* Deploy to cloud
+
+---
+
+## 📜 License
+
+MIT License
+
+---
+
+## 👤 Author
+
+**Emeka Philian Ogboona**
+AI/ML Engineer | Building intelligent systems with LLMs, RAG, and modern AI tools
+
+🔗 GitHub: [https://github.com/emekaphilian/AI-ML-Projects](https://github.com/emekaphilian/AI-ML-Projects)
+
+---
+
+## 💬 Final Thoughts
+
+We’re moving from:
+
+📖 “Reading documents”
+
+To:
+
+💬 “Interacting with knowledge”
+
+This project is a step toward that future.
+
+---
+
+⭐ If you found this useful, give it a star!
+
+
