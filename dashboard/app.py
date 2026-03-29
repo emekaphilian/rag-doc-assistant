@@ -24,7 +24,7 @@ import docx
 # =========================
 # PAGE CONFIG
 # =========================
-st.set_page_config(page_title="RAG Document Assistant", layout="wide")
+st.set_page_config(page_title="Document Assistant-RAG + LLM", layout="wide")
 
 # =========================
 # CUSTOM CSS - MODERN WHITE THEME
@@ -380,7 +380,7 @@ def check_hf_model_task(selected_model_id, hf_models, required_task="text-genera
 # =========================
 # HEADER
 # =========================
-st.title("📄 RAG Document Assistant")
+st.title("📄 Document Assistant-RAG + LLM")
 
 # =========================
 # SESSION STATE
@@ -652,7 +652,7 @@ if st.session_state.doc_ready:
                     if is_casual:
                         # Direct response for casual conversation
                         if any(word in query.lower() for word in ["hi", "hello", "hey"]):
-                            response = "👋 Hello! I'm your RAG Document Assistant. I'm ready to help you with questions about your uploaded documents. What would you like to know?"
+                            response = "👋 Hello! I'm your Document Assistant-RAG + LLM. I'm ready to help you with questions about your uploaded documents. What would you like to know?"
                         elif "how are you" in query.lower():
                             response = "🤖 I'm doing great, thank you! I'm here and ready to analyze your documents. What questions do you have about your files?"
                         elif any(word in query.lower() for word in ["thanks", "thank you"]):

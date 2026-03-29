@@ -1,4 +1,4 @@
-# RAG Document Q&A System
+# Document Assistant-RAG + LLM
 
 A Retrieval-Augmented Generation (RAG) system for document question-answering using multiple LLM providers with a modern Streamlit interface.
 

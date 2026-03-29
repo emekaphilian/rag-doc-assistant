@@ -11,7 +11,7 @@
 
 ## 🌟 Project Overview
 
-**RAG Document Assistant** is an advanced **Retrieval-Augmented Generation (RAG)** system that allows you to **upload PDFs/DOCX documents and interact with them conversationally** using modern LLMs.
+**Document Assistant-RAG + LLM** is an advanced **Retrieval-Augmented Generation (RAG)** system that allows you to **upload PDFs/DOCX documents and interact with them conversationally** using modern LLMs.
 
 It goes beyond basic RAG systems with:
 
