@@ -89,6 +89,35 @@ The app will be available at `http://localhost:8501`
 - **API Key**: Get from [dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
 - **Models**: Command-R series with streaming support
 
+## Development Challenges & Solutions
+
+During the development of this RAG system, several significant technical challenges were encountered and resolved:
+
+### 1. Import Function Not Defined
+- **Error**: `NameError: name 'get_llm' is not defined`
+- **Context**: API validation function was called but not imported in dashboard module
+- **Solution**: Added `get_llm` to imports in `dashboard/app.py` and updated validation logic
+
+### 2. Python Version Compatibility
+- **Error**: `ImportError` with Pydantic V1/V2 conflicts in Python 3.14+
+- **Context**: LangChain ecosystem compatibility issues with newer Python versions
+- **Solution**: Specified Python 3.11.9 in `runtime.txt` and updated dependency versions
+
+### 3. LangChain Import Conflicts
+- **Error**: `ModuleNotFoundError` and `ImportError` between old/new LangChain APIs
+- **Context**: Breaking changes in LangChain library updates
+- **Solution**: Updated all imports to use current LangChain v0.2+ syntax and compatible versions
+
+### 4. Hugging Face Model Deprecation
+- **Error**: `HTTPError: 404` for deprecated model endpoints
+- **Context**: Many popular HF models were removed or changed
+- **Solution**: Curated working models (DialoGPT, FLAN-T5, GPT-2) and added model validation
+
+### 5. API Key Validation Logic
+- **Error**: Generic API errors without clear user feedback
+- **Context**: Users couldn't distinguish between invalid keys and network issues
+- **Solution**: Implemented comprehensive API validation with specific error messages and LLM instantiation testing
+
 ## Known Issues & Solutions
 
 ### Python 3.14 Compatibility
