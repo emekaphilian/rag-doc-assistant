@@ -3,11 +3,6 @@
 import os
 from typing import List
 from dotenv import load_dotenv
-# Old (breaks on Streamlit Cloud)
-from langchain_huggingface import HuggingFaceEmbeddings
-
-# New (works with your requirements.txt)
-from langchain.embeddings import HuggingFaceEmbeddings
 
 # -------------------------
 # LOAD ENVIRONMENT VARIABLES
@@ -71,9 +66,9 @@ class HFLLM(BaseLLM):
 
     # ⚠️ HF Inference API does NOT support true streaming
     def stream(self, prompt: str):
+        # Return the full response as a single chunk since HF doesn't support streaming
         text = self.invoke(prompt)
-        for char in text:
-            yield char
+        yield text
 
 
 # -------------------------
@@ -100,13 +95,15 @@ class CohereLLM(BaseLLM):
             temperature=self.temperature
         )
 
+        # Handle different response formats
         if hasattr(response, "text") and response.text:
             return response.text.strip()
-
-        if hasattr(response, "message"):
-            return response.message.content[0].text.strip()
-
-        return str(response)
+        elif hasattr(response, "message") and response.message:
+            if hasattr(response.message, "content") and response.message.content:
+                return response.message.content[0].text.strip() if isinstance(response.message.content, list) else str(response.message.content).strip()
+            return str(response.message).strip()
+        else:
+            return str(response).strip()
 
     def stream(self, prompt: str):
         stream = self.client.chat_stream(
@@ -194,24 +191,42 @@ class QASystem:
             max_tokens=max_tokens
         )
 
-    def build_index(self, text: str):
+    def build_index(self, texts: List[str]):
+        """
+        Build FAISS index from multiple documents
+        """
+        if not texts:
+            raise ValueError("No texts provided")
+
+        # Combine all texts and split into chunks
+        combined_text = "\n\n".join(texts)
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=800,
             chunk_overlap=100
         )
-        docs = splitter.split_text(text)
+        docs = splitter.split_text(combined_text)
 
+        # Create embeddings and FAISS index
         embeddings = get_embeddings()
         self.vectorstore = FAISS.from_texts(docs, embeddings)
         self.vectorstore.save_local(INDEX_PATH)
 
     def _load_index(self):
-        if os.path.exists(INDEX_PATH):
-            return FAISS.load_local(
-                INDEX_PATH,
-                get_embeddings(),
-                allow_dangerous_deserialization=True
-            )
+        # Check for both FAISS index files
+        faiss_file = os.path.join(INDEX_PATH, "index.faiss")
+        pkl_file = os.path.join(INDEX_PATH, "index.pkl")
+
+        if os.path.exists(faiss_file) and os.path.exists(pkl_file):
+            try:
+                return FAISS.load_local(
+                    INDEX_PATH,
+                    get_embeddings(),
+                    allow_dangerous_deserialization=True
+                )
+            except Exception as e:
+                # If loading fails, return None to start fresh
+                print(f"Warning: Failed to load existing index: {e}")
+                return None
         return None
 
     def retrieve(self, query: str, k: int = 3):
